@@ -9,7 +9,7 @@ const port = 3000;
 // 3. สร้าง "สูตรอาหาร" (ตั้งค่าเส้นทาง)
 //    ถ้ามีคนมาที่หน้าแรก ('/') ให้ส่งข้อความว่า 'Hello!'
 app.get('/', (req, res) => {
-  res.send('Hello from Credi-Bridge! My app is working!');
+  res.send('Hello from Credi-Bridge! My app is working! We are here for help calculate SME Credit Score ');
 });
 
 // 4. สั่งให้ "เปิดร้าน" (เริ่มรันเซิร์ฟเวอร์)
