@@ -11,7 +11,7 @@ app.use(express.json());
 // ‼️ "การบ้าน" (Homework) - (ส่วนนี้ "ถูกต้อง" 100% แล้วครับ! "ห้าม" (DO NOT) แก้ไข!)
 // -----------------------------------------------------------------
 const dbConfig = {
-  host: '5ae7a868ac347ac8e72eec6199171c1in01.internal.ap-southeast-2.mysql.rds.myhuaweicloud.com', // (นี่คือ "ที่อยู่" (Host) "ยาวๆ" ของคุณ)
+  host: '5ae7a0868ac347ac8e72eec6199171c1in01.internal.ap-southeast-2.mysql.rds.myhuaweicloud.com', // (นี่คือ "ที่อยู่" (Host) "ยาวๆ" ของคุณ)
   user: 'root', 
   password: 'Credi_bridge_db', // (นี่คือ "รหัสผ่าน DB" (DB Pass) "ใหม่" (New) ของคุณ)
   // (เรา "ลบ" (Remove) 'database: ...' ออกจาก "Config หลัก" (Main Config) นี้)
