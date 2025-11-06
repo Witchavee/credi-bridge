@@ -13,7 +13,7 @@ app.use(express.json());
 const dbConfig = {
   host: '5ae7a0868ac347ac8e72eec6199171c1in01.internal.ap-southeast-2.mysql.rds.myhuaweicloud.com', // <-- (ใส่ "ชื่อยาวๆ" ที่คุณ "คัดลอก" (Copied) มา)
   user: 'root', // (นี่คือ "แอดมิน" (Admin) ของ DB เสมอ)
-  password: 'Credi_', // <-- (‼️ ใส่ "รหัสผ่าน DB" ‼️ ที่คุณ "จด" (Noted) ไว้ตอน "สร้าง" (Create) RDS)
+  password: 'Credi_bridge_db', // <-- (‼️ ใส่ "รหัสผ่าน DB" ‼️ ที่คุณ "จด" (Noted) ไว้ตอน "สร้าง" (Create) RDS)
   database: 'credi_bridge_db' // (เราจะ "สร้าง" (Create) "แฟ้ม" (Database) นี้ใน "ขั้นตอนที่ 3.B")
 };
 // -----------------------------------------------------------------
