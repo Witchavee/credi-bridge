@@ -1,11 +1,14 @@
-// 1. นำเข้าเครื่องปรุง (Express และ "กุญแจ" MySQL)
+// 1. นำเข้าเครื่องปรุง (Express, MySQL, และ "Path" (ใหม่!))
 const express = require('express');
-const mysql = require('mysql2/promise'); // (ถูกต้อง 100%)
+const mysql = require('mysql2/promise');
+const path = require('path'); // <-- (1. "ของใหม่!" (New!) นี่คือเครื่องมือสำหรับ "หา" (find) ไฟล์ .html ครับ)
 const app = express();
 const port = 3000;
 
 // 2. "ตัวแปลภาษา" (Middleware)
 app.use(express.json());
+// (NEW!) "เสิร์ฟ" (Serve) "ไฟล์" (Files) ทั้งหมด "ใน" (in) "โฟลเดอร์ 'public'" (the 'public' folder)
+app.use(express.static(path.join(__dirname, 'public')));
 
 // -----------------------------------------------------------------
 // ‼️ "การบ้าน" (Homework) - (ส่วนนี้ "ถูกต้อง" 100% แล้วครับ! "ห้าม" (DO NOT) แก้ไข!)
@@ -20,67 +23,76 @@ const DATABASE_NAME = 'credi_bridge_db'; // (เรา "ย้าย" (Move) "�
 // -----------------------------------------------------------------
 
 
-// 3. "สูตรอาหาร" (เส้นทาง)
+// 3. (UPGRADED!) "สูตรอาหาร" (เส้นทาง) - (หน้าแรก)
 app.get('/', (req, res) => {
-  res.send('Credi-Bridge API is LIVE! (v5 - DB Logic Fixed!)');
+  // "แทนที่" (Instead of) res.send('Hello')...
+  // ..."ให้" (Serve) "ส่ง" (send) "ไฟล์" (file) ที่ชื่อ "index.html"
+  // (ที่ "ซ่อน" (hidden) อยู่ใน "โฟลเดอร์ 'public'" (public folder) ... ที่เรา "กำลังจะ" (about to) สร้างครับ)
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// 4. (UPGRADED!) "เส้นทางใหม่" (New Endpoint) - "ทดสอบการเชื่อมต่อ" (v5)
-app.get('/api/test-db', async (req, res) => {
+// 4. (UPGRADED!) "เส้นทางสำหรับสมองจำลอง" (Mock Brain API Endpoint)
+app.post('/api/calculate-score', async (req, res) => {
   let connection;
   try {
-    // 5. (NEW!) "เชื่อมต่อ" (Connect) "ครั้งที่ 1" (First time) - "โดยไม่ระบุ" (without) "database"
-    //    เราจะเชื่อมต่อ "เข้า" (to) "เซิร์ฟเวอร์" (server) ... "ไม่" (not) "ฐานข้อมูล" (database)
-    console.log('Attempting to connect to the "server" (root)...');
-    connection = await mysql.createConnection(dbConfig); // (ใช้ "Config หลัก" (Main config) ที่ "ไม่มี" (no) 'database:')
-    console.log('Server connection successful!');
+    // 5. "รับข้อมูล" (Get Data)
+    //    (ครั้งนี้... เรา "รับ" (Receive) "ข้อความรีวิว" (reviewText) "จริงๆ" (real) จาก "Frontend" (หน้าเว็บ) ครับ!)
+    const { reviewText } = req.body; // (เรา "ดึง" (Destructure) "reviewText" ออกมาจาก JSON body)
 
-    // 6. (NEW!) "สั่ง" (Command) "สร้าง" (Create) "แฟ้ม" (Database)
-    //    (IF NOT EXISTS = "ถ้ายังไม่มี ก็ให้สร้าง" ... ซึ่ง "ปลอดภัย" (safe) ครับ)
-    await connection.query(`CREATE DATABASE IF NOT EXISTS \`${DATABASE_NAME}\`;`);
-    console.log(`Database '${DATABASE_NAME}' is ready.`);
+    if (!reviewText) {
+      return res.status(400).json({ message: 'Error: "reviewText" is missing.' });
+    }
 
-    // 7. (NEW!) "สั่ง" (Command) "เลือกใช้" (Select) "แฟ้ม" (Database) นั้น
-    await connection.query(`USE \`${DATABASE_NAME}\`;`);
-    console.log(`Switched to ${DATABASE_NAME}`);
+    // 6. "ฟังก์ชันสมองจำลอง" (Mock AI Function)
+    //    (นี่คือ "AI จำลอง" (Mock AI) ของเรา... เรา "แกล้งทำ" (Pretend) เป็น Pangu ครับ!)
+    let mockGrade = 'Positive';
+    let mockScore = 800; // (คะแนนเริ่มต้น)
 
-    // 8. (Same as before) "ลอง" (Try) "สร้าง" (Create) "โต๊ะ" (Table) (ถ้ามันยังไม่มี)
-    await connection.query(`
-      CREATE TABLE IF NOT EXISTS scores (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        score_value INT,
-        grade VARCHAR(10),
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
-    `);
-    console.log('Table "scores" is ready.');
+    if (reviewText.includes('แย่') || reviewText.includes('ห่วย') || reviewText.includes('ช้า')) {
+        mockGrade = 'Negative';
+        mockScore = 200;
+    } else if (reviewText.includes('แต่')) {
+        mockGrade = 'Neutral';
+        mockScore = 500;
+    }
 
-    // 9. (Same as before) "ลอง" (Try) "ใส่" (Insert) "ข้อมูลจำลอง" (Mock Data) ลงไป
+    // 7. (NEW!) "เชื่อมต่อ" (Connect) "ฐานข้อมูลจริง" (Real Database)
+    //    (เราจะ "บันทึก" (Save) "ผลลัพธ์จำลอง" (Mock Result) นี้... ลงใน "DB จริง" (Real DB) ของเราครับ!)
+    console.log('Connecting to DB to save mock score...');
+    connection = await mysql.createConnection({
+        ...dbConfig, // (ใช้ Config หลัก)
+        database: DATABASE_NAME // (และ "เลือก" (Select) "แฟ้ม" (DB) ของเรา)
+    });
+
+    // 8. "บันทึก" (Save) "คะแนน" (Score) ลงใน "โต๊ะ" (Table) `scores`
     await connection.query(
       'INSERT INTO scores (score_value, grade) VALUES (?, ?)', 
-      [780, 'B+'] // (นี่คือ "คะแนนจำลอง" (Mock Score) ของเรา)
+      [mockScore, mockGrade]
     );
-    console.log('Mock data inserted.');
+    console.log('Mock score saved to DB!');
 
-    // 10. (Same as before) "ส่งคำตอบ" กลับไป
+    // 9. "ส่งคำตอบ" กลับไป
     res.json({
-        message: 'SUCCESS! (v5) "เชื่อมต่อ" (Connected), "สร้าง" (Created) DB, "สร้าง" (Created) Table, และ "ใส่" (Inserted) ข้อมูล... "สำเร็จ" (Complete) 100%!'
+        message: 'คำนวณคะแนน (จาก "สมองจำลอง") สำเร็จ!',
+        score: mockScore,
+        grade: mockGrade,
+        analyzedText: reviewText
     });
 
   } catch (error) {
-    // 11. "จัดการ" (Handle) กรณี "พัง" (Error)
-    console.error('Database Connection Error (v5):', error.message);
+    // 10. "จัดการ" (Handle) กรณี "พัง" (Error)
+    console.error('API Error:', error.message);
     res.status(500).json({
-        message: 'Error (v5): ไม่สามารถ "เชื่อมต่อ" (Connect) หรือ "เขียน" (Write) ฐานข้อมูล (DB) ได้',
+        message: 'Error: API /api/calculate-score พัง',
         error: error.message
     });
   } finally {
-    // 12. "ปิด" (Close) การเชื่อมต่อ "เสมอ" (Always)
+    // 11. "ปิด" (Close) การเชื่อมต่อ "เสมอ" (Always)
     if (connection) await connection.end();
   }
 });
 
-// 13. "เปิดร้าน" (เริ่มรันเซิร์ฟเวอร์)
+// 12. "เปิดร้าน" (เริ่มรันเซิร์ฟเวอร์)
 app.listen(port, () => {
   console.log(`Credi-Bridge app listening on http://localhost:${port}`);
 });
