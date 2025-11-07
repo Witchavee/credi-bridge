@@ -3,60 +3,259 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Credi-Bridge Test</title>
+    <title>SME-Score: Onboarding</title>
     <style>
-        body { font-family: sans-serif; display: grid; place-items: center; min-height: 90vh; background: #f4f4f4; }
-        div { background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        textarea { width: 300px; height: 100px; margin-bottom: 1rem; }
-        button { width: 100%; padding: 0.75rem; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        button:hover { background: #0056b3; }
-        pre { background: #eee; padding: 1rem; border-radius: 4px; }
+        /* Base styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; /* Remove default body margin */
+            background-color: #f0f2f5;
+            color: #333;
+            /* No flexbox height constraints needed for this layout */
+        }
+
+        /* Your Minimal Horizontal Top Bar Style */
+        .minimal-top-bar {
+            background-color: white;
+            color: #333;
+            padding: 10px 30px;
+            display: flex;
+            justify-content: space-between; /* Pushes logo and date to opposite ends */
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
+            border-bottom: 2px solid #333; /* The dark line */
+            font-size: 0.9em;
+        }
+
+        .header-logo {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .header-date {
+            opacity: 0.7;
+        }
+
+        /* Container for the form elements */
+        .form-container {
+            /* Centering the content horizontally */
+            margin: 40px auto; 
+            
+            display: flex;
+            flex-wrap: wrap; 
+            gap: 20px; 
+            max-width: 900px;
+            background: white; 
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        .form-title {
+            width: 100%; 
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        /* Card styling for each step */
+        .step-card {
+            flex: 1; 
+            min-width: 280px; 
+            background-color: #ffffff;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0; 
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .step-card h2 {
+            font-size: 1.2em;
+            color: #34495e;
+            margin-top: 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ecf0f1; 
+            padding-bottom: 10px;
+        }
+
+        /* Form elements within cards */
+        .form-group { margin-bottom: 15px; }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1em;
+            color: #495057;
+        }
+        .form-group input::placeholder { color: #adb5bd; }
+
+        /* Consent box styling */
+        .consent-box {
+            background-color: #e6ffee;
+            border: 1px solid #a8e6cf;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 0.9em;
+            display: flex;
+            align-items: flex-start;
+        }
+        .consent-box input[type="checkbox"] {
+            margin-right: 10px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .consent-box label { line-height: 1.4; color: #28a745; }
+
+        /* Data connectors layout */
+        .data-connectors {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .connector-card {
+            text-align: center;
+            padding: 15px 10px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        .connector-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-color: #007bff;
+        }
+        .connector-card .emoji-icon {
+            font-size: 2.5em;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .connector-card p {
+            margin: 0;
+            font-weight: bold;
+            color: #495057;
+        }
+        .status-connected { color: #28a745; font-weight: normal; font-size: 0.9em; }
+        .status-unconnected { color: #dc3545; font-weight: normal; font-size: 0.9em; }
+
+        /* Button styling */
+        .btn-proceed {
+            width: 100%;
+            padding: 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .btn-proceed:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
-<body>
-    <div>
-        <h2>Credi-Bridge: Mock AI Test</h2>
-        <p>ทดสอบส่งรีวิว (เช่น "ส่งช้ามาก แย่") ไปให้ "สมองจำลอ" (Mock AI):</p>
+<body onload="updateClock()">
+    <header class="minimal-top-bar">
+        <span class="header-logo">SME - Score</span>
+        <span class="header-date" id="current-time"></span>
+    </header>
 
-        <textarea id="review-text" placeholder="พิมพ์รีวิวของลูกค้าที่นี่..."></textarea>
+    <div class="form-container">
+        <h1 class="form-title">Unlocking Digital Credit for Your Business</h1>
 
-        <button id="submit-button">คำนวณ (Calculate)</button>
+        <div class="step-card">
+            <h2>Step 1: Merchant Information</h2>
+            <div class="form-group"><input type="text" placeholder="Full Name"></div>
+            <div class="form-group"><input type="text" placeholder="Phone Number"></div>
+            <div class="form-group"><input type="text" placeholder="Business Type"></div>
+            <div class="form-group">
+                <select>
+                    <option disabled selected>Industry</option>
+                    <option>Retail</option>
+                    <option>Food & Beverage</option>
+                    <option>Services</option>
+                </select>
+            </div>
+        </div>
 
-        <pre id="result-display">(ผลลัพธ์จะแสดงที่นี่)</pre>
+        <div class="step-card">
+            <h2>Step 2: Data Consent</h2>
+            <div class="consent-box">
+                <input type="checkbox" id="consent">
+                <label for="consent">I agree to allow SME-Score to access and process my business data for credit scoring purposes, understanding the consent is recorded on Huawei BCS for transparency and auditability.</label>
+            </div>
+        </div>
+
+        <div class="step-card">
+            <h2>Step 3: Connect Data Sources</h2>
+            <div class="data-connectors">
+                <div class="connector-card">
+                    <span class="emoji-icon">🛍️</span> <p>Shopee</p>
+                    <span class="status-connected">Connected</span>
+                </div>
+                <div class="connector-card">
+                    <span class="emoji-icon">📦</span> <p>Lazada</p>
+                    <span class="status-unconnected">Unconnected</span>
+                </div>
+                <div class="connector-card">
+                    <span class="emoji-icon">🎶</span> <p>TikTok Shop</p>
+                    <span class="status-unconnected">Unconnected</span>
+                </div>
+                <div class="connector-card">
+                    <span class="emoji-icon">💳</span> <p>QR Payment</p>
+                    <span class="status-unconnected">Unconnected</span>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn-proceed" onclick="window.location.href='dashboard.html'">Proceed to Score Calculation</button>
     </div>
-
+    
     <script>
-        // "หา" (Find) "ปุ่ม" (Button) และ "ของ" (Elements) ที่เราต้องใช้
-        const submitButton = document.getElementById('submit-button');
-        const reviewText = document.getElementById('review-text');
-        const resultDisplay = document.getElementById('result-display');
+        function updateClock() {
+            const now = new Date();
+            
+            // Options for formatting the date (e.g., Friday, November 7, 2025)
+            const dateOptions = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            
+            // Options for formatting the time (e.g., 23:20:37)
+            const timeOptions = { 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit', 
+                hour12: false // Use 24-hour format
+            };
 
-        // "เมื่อ" (When) "ปุ่ม" (Button) ถูก "คลิก" (Clicked)
-        submitButton.onclick = async () => {
+            const formattedDate = now.toLocaleDateString('en-US', dateOptions);
+            const formattedTime = now.toLocaleTimeString('en-US', timeOptions);
+            
+            const timeString = `${formattedDate} ${formattedTime}`;
 
-            // 1. "อ่าน" (Read) "ข้อความ" (Text) จาก "กล่อง" (Textarea)
-            const text = reviewText.value;
-            resultDisplay.textContent = 'กำลังคำนวณ... (Connecting to server...)'; // (เพิ่ม Loading text)
-
-            // 2. "ยิง" (Call) "ประตู POST" (POST Endpoint) ของ "สมอง" (Backend) ของเรา
-            //    (เรา "ส่ง" (Send) "ข้อความ" (Text) นั้น... ไปใน "รูปแบบ" (Format) JSON)
-            const response = await fetch('/api/calculate-score', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    reviewText: text // (นี่คือ 'reviewText' ที่ 'app.js' (v6) "รอรับ" (waiting) อยู่)
-                })
-            });
-
-            // 3. "อ่าน" (Read) "คำตอบ" (Response) ที่ "สมอง" (Backend) "ส่งกลับ" (Sent back) มา
-            const result = await response.json();
-
-            // 4. "แสดง" (Display) "คำตอบ" (Response) นั้น
-            //    (JSON.stringify(..., null, 2) คือ "ทำให้ JSON สวยงาม")
-            resultDisplay.textContent = JSON.stringify(result, null, 2);
-        };
+            document.getElementById('current-time').textContent = timeString;
+            
+            // Call this function again after 1000 milliseconds (1 second)
+            setTimeout(updateClock, 1000);
+        }
+        
+        // The onload="updateClock()" in the <body> tag starts the clock when the page loads.
     </script>
 </body>
 </html>
