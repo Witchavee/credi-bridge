@@ -34,20 +34,20 @@ const DATABASE_NAME = 'credi_bridge_db';
 // -----------------------------------------------------------------
 // ‼️ "การบ้าน" (Homework) - "กุญแจ AI (OCR) 'ชุดใหม่'" (NEW AI (OCR) Keys)
 // -----------------------------------------------------------------
-const IAM_ENDPOINT = 'https://iam.ap-southeast-2.myhuaweicloud.com/v3/auth/tokens'; [cite_start]// ("ที่อยู่" (Endpoint) "ขอ Token" (Request Token) "ใน 'AP-Bangkok'" (in 'AP-Bangkok') [cite: 414])
-const OCR_ENDPOINT = 'https://ocr.ap-southeast-2.myhuaweicloud.com/v2'; [cite_start]// ("ที่อยู่" (Endpoint) "OCR 'AP-Bangkok'" [cite: 346, 74])
+const IAM_ENDPOINT = 'https://iam.ap-southeast-2.myhuaweicloud.com/v3/auth/tokens'; // ("ที่อยู่" (Endpoint) "ขอ Token" (Request Token) "ใน 'AP-Bangkok'" (in 'AP-Bangkok'))
+const OCR_ENDPOINT = 'https://ocr.ap-southeast-2.myhuaweicloud.com/v2'; // ("ที่อยู่" (Endpoint) "OCR 'AP-Bangkok'")
 
 // (ใส่ "Project ID" "AP-Bangkok" (จาก))
 const OCR_PROJECT_ID = 'd457f36b291e482a95b25423703d7733'; 
 
 // (ใส่ "ชื่อ" (Name) "บัญชี" (Account) "หลัก" (Main) "ของคุณ" (your) (จาก))
-const HUAWEI_ACCOUNT_NAME = 'hid_ig0eor204azdqfu'; [cite_start]// (นี่คือ "domainname" [cite: 428])
+const HUAWEI_ACCOUNT_NAME = 'hid_ig0eor204azdqfu'; // (นี่คือ "domainname")
 
 // (ใส่ "ชื่อ" (Name) "ผู้ใช้" (User) "ที่คุณ 'ล็อคอิน'" (Login) "เว็บ" (Console) "ด้วย" (with) (จาก))
-const HUAWEI_IAM_USERNAME = 'hid_ig0eor204azdqfu'; [cite_start]// (นี่คือ "username" [cite: 425])
+const HUAWEI_IAM_USERNAME = 'hid_ig0eor204azdqfu'; // (นี่คือ "username")
 
 // (ใส่ "รหัสผ่าน" (Password) "ที่คุณ 'ล็อคอิน'" (Login) "เว็บ" (Console) "ด้วย" (with) (‼️ "รหัสผ่าน 1" ‼️))
-const HUAWEI_IAM_PASSWORD = 'Prim2547_'; [cite_start]// (นี่คือ "password" [cite: 426])
+const HUAWEI_IAM_PASSWORD = 'Prim2547_'; // (นี่คือ "password")
 // -----------------------------------------------------------------
 
 // 4. (NEW v11!) "ฟังก์ชัน" (Function) "ขอ 'โทเค็น'" (Request 'Token')
@@ -95,7 +95,7 @@ async function getHuaweiToken() {
 
 // 5. "สูตรอาหาร" (เส้นทาง) - (หน้าแรก)
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'Onboarding.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // 6. (UPGRADED v11!) "เส้นทางสำหรับสมอง AI (OCR) จริง" (Real AI (OCR) Brain)
@@ -121,7 +121,7 @@ app.post('/api/analyze-image', upload.single('imageFile'), async (req, res) => {
     };
 
     // "สร้าง" (Build) "ที่อยู่" (URL) "เต็มๆ" (Full) (รวม "Project ID" (Project ID))
-    [cite_start]// (เรา "ใช้" (Use) "บริการ" (Service) 'general-text' (ข้อความทั่วไป) [cite: 2415, 2488])
+    // (เรา "ใช้" (Use) "บริการ" (Service) 'general-text' (ข้อความทั่วไป))
     const fullOcrEndpoint = `${OCR_ENDPOINT}/v2/${OCR_PROJECT_ID}/ocr/general-text`;
 
     // 10. "ยิง" (Call) "AI (OCR)" (AI (OCR)) (ด้วย "Token" (Token) "ที่เพิ่งได้มา" (we just got))
@@ -129,7 +129,7 @@ app.post('/api/analyze-image', upload.single('imageFile'), async (req, res) => {
     const ocrResult = await axios.post(fullOcrEndpoint, ocrRequestBody, {
         headers: {
             'Content-Type': 'application/json',
-            [cite_start]'X-Auth-Token': token // (‼️ "ใส่" (Put) "โทเค็น" (Token) "ของเรา" (Our) "ที่นี่" (Here) ‼️ [cite: 377, 380])
+            'X-Auth-Token': token // (‼️ "ใส่" (Put) "โทเค็น" (Token) "ของเรา" (Our) "ที่นี่" (Here) ‼️)
         }
     });
     console.log('OCR AI analysis complete!');
@@ -149,6 +149,8 @@ app.post('/api/analyze-image', upload.single('imageFile'), async (req, res) => {
     });
   }
 });
+
+// (เรา "ไม่" (DO NOT) "จำเป็นต้อง" (need) "ใช้" (use) "/api/test-db" "อีกต่อไป" (anymore) ... "โค้ด" (Code) "ด้านบน" (Above) "คือ" (is) "การทดสอบ" (Test) "ที่ 'ดีกว่า'" (Better) "ครับ")
 
 // 13. "เปิดร้าน" (เริ่มรันเซิร์ฟเวอร์)
 app.listen(port, () => {
