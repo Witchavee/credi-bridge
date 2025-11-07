@@ -31,7 +31,7 @@ const dbConfig = {
 const DATABASE_NAME = 'credi_bridge_db';
 // -----------------------------------------------------------------
 
-// -----------------------------------------------------------------
+// -----------------------------------------------------------------_
 // ‼️ "การบ้าน" (Homework) - "กุญแจ AI (OCR) 'ชุดใหม่'" (NEW AI (OCR) Keys)
 // -----------------------------------------------------------------
 const IAM_ENDPOINT = 'https://iam.ap-southeast-2.myhuaweicloud.com/v3/auth/tokens'; // ("ที่อยู่" (Endpoint) "ขอ Token" (Request Token) "ใน 'AP-Bangkok'" (in 'AP-Bangkok'))
