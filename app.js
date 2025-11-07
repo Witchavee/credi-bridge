@@ -95,7 +95,7 @@ async function getHuaweiToken() {
 
 // 5. "สูตรอาหาร" (เส้นทาง) - (หน้าแรก)
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'Onboarding.html'));
 });
 
 // 6. (UPGRADED v11!) "เส้นทางสำหรับสมอง AI (OCR) จริง" (Real AI (OCR) Brain)
