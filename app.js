@@ -15,7 +15,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // -----------------------------------------------------------------
 const dbConfig = {
   host: '5ae7a0868ac347ac8e72eec6199171c1in01.internal.ap-southeast-2.mysql.rds.myhuaweicloud.com', // (นี่คือ "ที่อยู่" (Host) "ยาวๆ" ของคุณ)
-  user: 'root', 
+  user: 'root',
   password: 'Credi_bridge_db', // (นี่คือ "รหัสผ่าน DB" (DB Pass) "ใหม่" (New) ของคุณ)
   // (เรา "ลบ" (Remove) 'database: ...' ออกจาก "Config หลัก" (Main Config) นี้)
 };
@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
   // "แทนที่" (Instead of) res.send('Hello')...
   // ..."ให้" (Serve) "ส่ง" (send) "ไฟล์" (file) ที่ชื่อ "index.html"
   // (ที่ "ซ่อน" (hidden) อยู่ใน "โฟลเดอร์ 'public'" (public folder) ... ที่เรา "กำลังจะ" (about to) สร้างครับ)
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'Onboarding.html'));
 });
 
 // 4. (UPGRADED!) "เส้นทางสำหรับสมองจำลอง" (Mock Brain API Endpoint)
