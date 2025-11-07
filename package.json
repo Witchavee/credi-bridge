@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/Witchavee/credi-bridge#readme",
   "dependencies": {
+    "@huaweicloud/huaweicloud-sdk-core": "^3.1.174",
+    "@huaweicloud/huaweicloud-sdk-ocr": "^3.1.174",
     "axios": "^1.13.2",
     "express": "^5.1.0",
     "multer": "^2.0.2",
