@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credi-Bridge Test</title>
+    <style>
+        body { font-family: sans-serif; display: grid; place-items: center; min-height: 90vh; background: #f4f4f4; }
+        div { background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        textarea { width: 300px; height: 100px; margin-bottom: 1rem; }
+        button { width: 100%; padding: 0.75rem; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        pre { background: #eee; padding: 1rem; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div>
+        <h2>Credi-Bridge: Mock AI Test</h2>
+        <p>ทดสอบส่งรีวิว (เช่น "ส่งช้ามาก แย่") ไปให้ "สมองจำลอง" (Mock AI):</p>
+
+        <textarea id="review-text" placeholder="พิมพ์รีวิวของลูกค้าที่นี่..."></textarea>
+
+        <button id="submit-button">คำนวณ (Calculate)</button>
+
+        <pre id="result-display">(ผลลัพธ์จะแสดงที่นี่)</pre>
+    </div>
+
+    <script>
+        // "หา" (Find) "ปุ่ม" (Button) และ "ของ" (Elements) ที่เราต้องใช้
+        const submitButton = document.getElementById('submit-button');
+        const reviewText = document.getElementById('review-text');
+        const resultDisplay = document.getElementById('result-display');
+
+        // "เมื่อ" (When) "ปุ่ม" (Button) ถูก "คลิก" (Clicked)
+        submitButton.onclick = async () => {
+
+            // 1. "อ่าน" (Read) "ข้อความ" (Text) จาก "กล่อง" (Textarea)
+            const text = reviewText.value;
+            resultDisplay.textContent = 'กำลังคำนวณ... (Connecting to server...)'; // (เพิ่ม Loading text)
+
+            // 2. "ยิง" (Call) "ประตู POST" (POST Endpoint) ของ "สมอง" (Backend) ของเรา
+            //    (เรา "ส่ง" (Send) "ข้อความ" (Text) นั้น... ไปใน "รูปแบบ" (Format) JSON)
+            const response = await fetch('/api/calculate-score', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    reviewText: text // (นี่คือ 'reviewText' ที่ 'app.js' (v6) "รอรับ" (waiting) อยู่)
+                })
+            });
+
+            // 3. "อ่าน" (Read) "คำตอบ" (Response) ที่ "สมอง" (Backend) "ส่งกลับ" (Sent back) มา
+            const result = await response.json();
+
+            // 4. "แสดง" (Display) "คำตอบ" (Response) นั้น
+            //    (JSON.stringify(..., null, 2) คือ "ทำให้ JSON สวยงาม")
+            resultDisplay.textContent = JSON.stringify(result, null, 2);
+        };
+    </script>
+</body>
+</html>
