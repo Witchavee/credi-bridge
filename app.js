@@ -38,7 +38,7 @@ const IAM_ENDPOINT = 'https://iam.ap-southeast-2.myhuaweicloud.com/v3/auth/token
 const OCR_ENDPOINT = 'https://ocr.ap-southeast-2.myhuaweicloud.com/v2'; // ("ที่อยู่" (Endpoint) "OCR 'AP-Bangkok'")
 
 // (ใส่ "Project ID" "AP-Bangkok" (จาก))
-const OCR_PROJECT_ID = 'c6570f80b291e482a95b25423703d7733'; 
+const OCR_PROJECT_ID = 'd457f36b291e482a95b25423703d7733'; 
 
 // (ใส่ "ชื่อ" (Name) "บัญชี" (Account) "หลัก" (Main) "ของคุณ" (your) (จาก))
 const HUAWEI_ACCOUNT_NAME = 'hid_ig0eor204azdqfu'; // (นี่คือ "domainname")
