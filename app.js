@@ -129,7 +129,7 @@ app.post('/api/analyze-image', upload.single('imageFile'), async (req, res) => {
     const ocrResult = await axios.post(fullOcrEndpoint, ocrRequestBody, {
         headers: {
             'Content-Type': 'application/json',
-            'X-Auth-Token': token // (‼️ "ใส่" (Put) "โทเค็น" (Token) "ของเรา" (Our) "ที่นี่" (Here) ‼️)
+            'X-Auth-Token': token
         }
     });
     console.log('OCR AI analysis complete!');
