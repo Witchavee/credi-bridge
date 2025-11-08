@@ -18,20 +18,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 // -----------------------------------------------------------------
 // ‼️ "การบ้าน" (Homework) - "กุญแจ AI (OCR) 'ชุดใหม่'" (NEW AI (OCR) Keys)
 // -----------------------------------------------------------------
-const IAM_ENDPOINT = 'https://iam.ap-southeast-2.myhuaweicloud.com/v3/auth/tokens'; // ("ที่อยู่" (Endpoint) "ขอ Token" (Request Token) "ใน 'AP-Bangkok'" (in 'AP-Bangkok'))
-const OCR_ENDPOINT = 'https://ocr.ap-southeast-2.myhuaweicloud.com/v2'; // ("ที่อยู่" (Endpoint) "OCR 'AP-Bangkok'")
+const IAM_ENDPOINT = 'https://iam.ap-southeast-2.myhuaweicloud.com/v3/auth/tokens';
+const OCR_ENDPOINT = 'https://ocr.ap-southeast-2.myhuaweicloud.com';
 
-// (ใส่ "Project ID" "ที่ 'ถูกต้อง'" (Correct) (จาก))
-const OCR_PROJECT_ID = 'd457f36b291e482a95b25423703d7733'; // (น่าจะ (Probably) d457f...)
-
-// (ใส่ "ชื่อ" (Name) "บัญชี" (Account) "หลัก" (Main) "ของคุณ" (your) (จาก))
-const HUAWEI_ACCOUNT_NAME = 'hid_ig0eor204azdqfu'; // (นี่คือ "domainname")
-
-// (ใส่ "ชื่อ" (Name) "ผู้ใช้" (User) "ที่คุณ 'ล็อคอิน'" (Login) "เว็บ" (Console) "ด้วย" (with) (จาก))
-const HUAWEI_IAM_USERNAME = 'hid_ig0eor204azdqfu'; // (นี่คือ "username")
-
-// (ใส่ "รหัสผ่าน" (Password) "ที่คุณ 'ล็อคอิน'" (Login) "เว็บ" (Console) "ด้วย" (with) (‼️ "รหัสผ่าน 1" ‼️))
-const HUAWEI_IAM_PASSWORD = 'Prim2547_'; // (นี่คือ "password")
+// ✅ From "My Credentials" page screenshot:
+const OCR_PROJECT_ID = 'd45758b291e482a95b25423703d7733'; // ⚠️ CORRECTED!
+const HUAWEI_ACCOUNT_NAME = 'hid_ig0eor204azdqfu'; // Account Name (same as IAM Username)
+const HUAWEI_IAM_USERNAME = 'hid_ig0eor204azdqfu'; // IAM Username
+const HUAWEI_IAM_PASSWORD = 'Prim2547_'; // Your IAM password
 // -----------------------------------------------------------------
 
 // 4. (NEW v11!) "ฟังก์ชัน" (Function) "ขอ 'โทเค็น'" (Request 'Token')
