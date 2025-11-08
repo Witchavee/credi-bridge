@@ -23,8 +23,8 @@ const OCR_ENDPOINT = 'https://ocr.ap-southeast-2.myhuaweicloud.com';
 
 // ✅ From "My Credentials" page screenshot:
 const OCR_PROJECT_ID = 'd457f36b291e482a95b25423703d7733'; // ⚠️ CORRECTED!
-const HUAWEI_ACCOUNT_NAME = 'hid_ig0eor204azdqfu'; // Account Name (same as IAM Username)
-const HUAWEI_IAM_USERNAME = 'hid_ig0eor204azdqfu'; // IAM Username
+const HUAWEI_ACCOUNT_NAME = 'prim_witchavee1234'; // Account Name (same as IAM Username)
+const HUAWEI_IAM_USERNAME = 'prim_witchavee1234'; // IAM Username
 const HUAWEI_IAM_PASSWORD = 'credi1234'; // Your IAM password
 // -----------------------------------------------------------------
 
