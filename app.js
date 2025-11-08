@@ -1,6 +1,6 @@
 // 1. นำเข้าเครื่องปรุง (Express, MySQL, Path, และ "ของใหม่" (NEW!): Axios, Multer)
 const express = require('express');
-const mysql = require('mysql2/promise');
+// const mysql = require('mysql2/promise'); // (เรา "พัก" (Pause) "ฐานข้อมูล" (DB) "ไว้ก่อน" (for now) "เพื่อ "ทดสอบ" (Test) "AI" (AI) "ให้ 'ผ่าน'" (Pass) "ก่อน" (first) ครับ!)
 const path = require('path');
 const axios = require('axios'); // (NEW! "โทรศัพท์" (Phone) "ของเรา" (Our))
 const multer = require('multer'); // (เครื่องมือ "รับไฟล์" (File Upload))
@@ -16,29 +16,13 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // -----------------------------------------------------------------
-// ‼️ "การบ้าน" (Homework) - "กุญแจ 'ฐานข้อมูล' (DB)" (DB Keys)
-// -----------------------------------------------------------------
-const dbConfig = {
-  // (ใส่ "ชื่อยาวๆ" (Private Domain Name) ที่คุณ "คัดลอก" (Copied) มาจากหน้า RDS Details)
-  host: '5ae7a0868ac347ac8e72eec6199171c1in01.internal.ap-southeast-2.mysql.rds.myhuaweicloud.com', 
-
-  // (นี่คือ "แอดมิน" (Admin) ของ DB เสมอ)
-  user: 'root', 
-
-  // (‼️ ใส่ "รหัสผ่าน 3" (Password 3) (DB Pass) ‼️ ที่คุณ "จด" (Noted) ไว้ตอน "สร้าง" (Create) RDS)
-  password: 'Credi_bridge_db', 
-};
-const DATABASE_NAME = 'credi_bridge_db';
-// -----------------------------------------------------------------
-
-// -----------------------------------------------------------------_
 // ‼️ "การบ้าน" (Homework) - "กุญแจ AI (OCR) 'ชุดใหม่'" (NEW AI (OCR) Keys)
 // -----------------------------------------------------------------
 const IAM_ENDPOINT = 'https://iam.ap-southeast-2.myhuaweicloud.com/v3/auth/tokens'; // ("ที่อยู่" (Endpoint) "ขอ Token" (Request Token) "ใน 'AP-Bangkok'" (in 'AP-Bangkok'))
 const OCR_ENDPOINT = 'https://ocr.ap-southeast-2.myhuaweicloud.com/v2'; // ("ที่อยู่" (Endpoint) "OCR 'AP-Bangkok'")
 
-// (ใส่ "Project ID" "AP-Bangkok" (จาก))
-const OCR_PROJECT_ID = 'd457f36b291e482a95b25423703d7733'; 
+// (ใส่ "Project ID" "ที่ 'ถูกต้อง'" (Correct) (จาก))
+const OCR_PROJECT_ID = 'd457f36b291e482a95b25423703d7733'; // (น่าจะ (Probably) d457f...)
 
 // (ใส่ "ชื่อ" (Name) "บัญชี" (Account) "หลัก" (Main) "ของคุณ" (your) (จาก))
 const HUAWEI_ACCOUNT_NAME = 'hid_ig0eor204azdqfu'; // (นี่คือ "domainname")
@@ -129,7 +113,7 @@ app.post('/api/analyze-image', upload.single('imageFile'), async (req, res) => {
     const ocrResult = await axios.post(fullOcrEndpoint, ocrRequestBody, {
         headers: {
             'Content-Type': 'application/json',
-            'X-Auth-Token': token
+            'X-Auth-Token': token // (‼️ "ใส่" (Put) "โทเค็น" (Token) "ของเรา" (Our) "ที่นี่" (Here) ‼️)
         }
     });
     console.log('OCR AI analysis complete!');
@@ -143,14 +127,16 @@ app.post('/api/analyze-image', upload.single('imageFile'), async (req, res) => {
   } catch (error) {
     // 12. "จัดการ" (Handle) กรณี "พัง" (Error)
     console.error('OCR AI Error (v11):', error.message);
+    // (NEW!) "เพิ่ม" (Add) "รายละเอียด" (Details) "ของ Error" (of the Error) "ให้เรา" (for us) "เห็น" (see) "ด้วย" (too)
+    if (error.response) {
+        console.error('Error Data:', JSON.stringify(error.response.data, null, 2));
+    }
     res.status(500).json({
         message: 'Error: API /api/analyze-image (v11) พัง',
         error: error.message
     });
   }
 });
-
-// (เรา "ไม่" (DO NOT) "จำเป็นต้อง" (need) "ใช้" (use) "/api/test-db" "อีกต่อไป" (anymore) ... "โค้ด" (Code) "ด้านบน" (Above) "คือ" (is) "การทดสอบ" (Test) "ที่ 'ดีกว่า'" (Better) "ครับ")
 
 // 13. "เปิดร้าน" (เริ่มรันเซิร์ฟเวอร์)
 app.listen(port, () => {
